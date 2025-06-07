@@ -1,3 +1,10 @@
 __pycache__/
-*.pyc
-env/
+*.py[cod]
+.ipynb_checkpoints/
+.env
+venv/
+ENV/
+*.joblib
+*.pkl
+.DS_Store
+reports/*.pdf
