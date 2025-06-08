@@ -2,8 +2,12 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# Load your trained model pipeline
-pipeline = joblib.load("models/bank_term_deposit_pipeline.joblib")
+# Load trained pipeline
+@st.cache_resource
+def load_model():
+    return joblib.load("models/bank_term_deposit_pipeline.joblib")
+
+pipeline = load_model()
 
 st.title("Bank Term Deposit Prediction App")
 
