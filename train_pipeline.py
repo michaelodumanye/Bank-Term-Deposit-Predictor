@@ -6,7 +6,14 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import RandomForestClassifier
 
 # Load your training data
-data = pd.read_csv("data/raw/bank-additional-full.csv")  # update this path if needed
+data = pd.read_csv("data/raw/bank-additional-full.csv", sep=";", quotechar='"')
+
+  # update this path if needed
+
+print(data.columns.tolist())
+
+# ✅ Clean column names
+data.columns = data.columns.str.strip()
 
 # Split into X and y
 X = data.drop("y", axis=1)
