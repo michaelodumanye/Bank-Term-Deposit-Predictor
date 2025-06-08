@@ -5,41 +5,30 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import RandomForestClassifier
 
-# Load your training data
-data = pd.read_csv("data/raw/bank-additional-full.csv", sep=";", quotechar='"')
+data = pd.read_csv("data/raw/bank-additional-full.csv", sep=';')
+data.columns = data.columns.str.strip()  # Clean column names
 
-  # update this path if needed
-
-print(data.columns.tolist())
-
-# ✅ Clean column names
-data.columns = data.columns.str.strip()
-
-# Split into X and y
 X = data.drop("y", axis=1)
 y = data["y"]
 
-# Define categorical columns (as used before)
 categorical_cols = ['job', 'marital', 'education', 'default', 'housing', 'loan',
                     'contact', 'month', 'day_of_week', 'poutcome']
 
-# ColumnTransformer
 preprocessor = ColumnTransformer(
-    transformers=[
-        ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_cols)
-    ],
-    remainder='passthrough'  # all numerical features
+    transformers=[('cat', OneHotEncoder(handle_unknown='ignore'), categorical_cols)],
+    remainder='passthrough'
 )
 
-# Build pipeline
-pipeline = Pipeline(steps=[
+pipeline = Pipeline([
     ('preprocessor', preprocessor),
     ('classifier', RandomForestClassifier(class_weight='balanced', random_state=42))
 ])
 
-# Fit the pipeline
 pipeline.fit(X, y)
 
-# Save to models/
 joblib.dump(pipeline, "models/bank_term_deposit_pipeline.joblib")
-print("✅ Pipeline saved to models/bank_term_deposit_pipeline.joblib")
+
+# Test loading right away
+loaded_pipeline = joblib.load("models/bank_term_deposit_pipeline.joblib")
+print("Pipeline loaded successfully!")
+
