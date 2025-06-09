@@ -1,15 +1,20 @@
 # Bank Term Deposit Predictor
 
-A machine learning project to predict whether a client will subscribe to a bank term deposit based on features from direct marketing campaigns.
+A machine learning solution to predict whether a client will subscribe to a bank term deposit, based on historical data from direct marketing campaigns conducted by a Portuguese banking institution.
+
+📊 Overview
+This end-to-end project includes data preprocessing, model training, and deployment via a user-friendly web application using Streamlit. It is structured to support experimentation and reproducibility.
 
 ## 📂 Project Structure
 ```
-Azubi Project/
+Bank-Term-Deposit-Predictor/
 ├── data/
-│   └── raw/
+│   └── raw/                      # Raw dataset (bank-additional-full.csv)
+├── models/
+│   └── bank_term_deposit_pipeline.joblib
 ├── notebooks/
-│   ├── 01_eda.ipynb
-│   └── 03_modeling.ipynb
+│   ├── 01_eda.ipynb              # Exploratory Data Analysis
+│   └── 03_modeling.ipynb         # Model training and evaluation
 ├── reports/
 │   └── summary.pdf
 ├── src/
@@ -17,36 +22,102 @@ Azubi Project/
 │   ├── feature_engineering.py
 │   ├── train_model.py
 │   └── evaluate_model.py
-├── models/
-│   └── random_forest_model.joblib
+├── streamlit_app.py              # Streamlit interface
 ├── requirements.txt
 ├── .gitignore
 └── README.md
+
+```
+🛠 Tools & Technologies
+Python 3.10
+
+Libraries: pandas, scikit-learn, joblib, streamlit, seaborn, matplotlib, xgboost, imbalanced-learn
+
+Deployment: Streamlit Community Cloud
+
 ```
 
 ## 📈 Workflow
-1. Perform EDA
-2. Clean and encode data
-3. Engineer features
-4. Train a classification model
-5. Evaluate performance
-6. Report insights and recommendations
+Perform exploratory data analysis (EDA)
 
-## 📊 Dataset
-- Source: [UCI Bank Marketing Dataset](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing)
-- File used: `bank-additional-full.csv`
+Clean column names and encode categorical variables
+
+Build and train a RandomForestClassifier inside a pipeline
+
+Serialize the pipeline with joblib
+
+Create a web app using Streamlit
+
+Deploy and test the solution
+
+```
+
+## 📋 Dataset
+Source: UCI Machine Learning Repository
+
+Records: 41,188
+
+Features: 20
+
+Target: y (yes/no – did the client subscribe to a term deposit?)
+
+```
 
 ## 🚀 How to Run
-```bash
-# Create environment
+# Step 1: Create and activate a virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows use venv\Scripts\activate
 
-# Install requirements
+# Windows
+venv\Scripts\activate
+
+# macOS/Linux
+source venv/bin/activate
+
+# Step 2: Install dependencies
 pip install -r requirements.txt
 
-# Run training
+# Step 3: Train model
 python src/train_model.py
+
+# Step 4: Launch the Streamlit app
+streamlit run streamlit_app.py
+
+```
+## 🌐 Deployment
+The app was deployed using Streamlit Community Cloud.
+
+Note on Compatibility:
+Model loading errors (e.g., Can't get attribute '_RemainderColsList') were resolved by aligning package versions:
+
+streamlit==1.35.0
+pandas==1.5.3
+scikit-learn==1.2.2
+joblib==1.2.0
+numpy
+matplotlib
+seaborn
+imbalanced-learn
+xgboost
+
+```
+
+## ✅ Results
+The trained pipeline loads and performs well in both local and deployed environments.
+
+The Streamlit interface allows users to input data and receive real-time predictions.
+
+The entire ML lifecycle is covered—from raw data to deployed product.
+
+```
+## 🔮 Future Improvements
+Integrate SHAP or LIME for model interpretability
+
+Add evaluation metrics to the app UI
+
+Perform hyperparameter tuning
+
+Add logging and monitoring
+
 ```
 
 ## 🧪 Evaluation Metrics
@@ -55,3 +126,11 @@ python src/train_model.py
 - Recall
 - F1 Score
 - Confusion Matrix
+
+```
+
+##✍️ Author
+Michael Odumanye
+
+
+
