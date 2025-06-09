@@ -1,15 +1,25 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import os
 
 # Load trained pipeline
 @st.cache_resource
 def load_model():
-    return joblib.load("models/bank_term_deposit_pipeline.joblib")
+    model_path = os.path.join("models", "bank_term_deposit_pipeline.joblib")
+    if not os.path.exists(model_path):
+        st.error(f"❌ Model file not found at: {model_path}")
+        return None
+    try:
+        model = joblib.load(model_path)
+        return model
+    except Exception as e:
+        st.error(f"❌ Failed to load model: {e}")
+        return None
 
 pipeline = load_model()
 
-st.title("Bank Term Deposit Prediction App")
+st.title("📈 Bank Term Deposit Prediction App")
 
 st.markdown("### Please enter the customer's information below:")
 
@@ -89,11 +99,12 @@ input_df = pd.DataFrame([input_dict])
 
 # Predict button
 if st.button("Predict Term Deposit Subscription"):
-    prediction = pipeline.predict(input_df)[0]
-    prob = pipeline.predict_proba(input_df)[0][1]
-
-    if prediction == 1:
-        st.success(f"✅ Customer is likely to SUBSCRIBE (probability: {prob:.2f})")
+    if pipeline is not None:
+        prediction = pipeline.predict(input_df)[0]
+        prob = pipeline.predict_proba(input_df)[0][1]
+        if prediction == 1 or prediction == "yes":
+            st.success(f"✅ Customer is likely to SUBSCRIBE (probability: {prob:.2f})")
+        else:
+            st.warning(f"❌ Customer is NOT likely to subscribe (probability: {prob:.2f})")
     else:
-        st.warning(f"❌ Customer is NOT likely to subscribe (probability: {prob:.2f})")
-
+        st.error("❌ Model could not be loaded. Please check the model path and retry.")
